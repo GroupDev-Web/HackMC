@@ -1,0 +1,20 @@
+{
+	"schemaVersion": 1,
+	"id": "hackmc",
+	"version": "${version}",
+	"name": "HackMC",
+	"description": "A lightweight modular Fabric client.",
+	"authors": ["HackMC"],
+	"license": "All-Rights-Reserved",
+	"environment": "client",
+	"entrypoints": {
+		"client": ["dev.hackmc.client.HackMcClient"]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~26.1.2",
+		"java": ">=25",
+		"fabric-api": "*",
+		"screenapi": "*"
+	}
+}

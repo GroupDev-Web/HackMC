@@ -1,0 +1,19 @@
+{
+	"schemaVersion": 1,
+	"id": "screenapi",
+	"version": "${version}",
+	"name": "HackMC Screen API",
+	"description": "Glossy transparent screens, controls, custom fonts, and HUD editing for Fabric clients.",
+	"authors": ["HackMC"],
+	"license": "MIT",
+	"environment": "client",
+	"entrypoints": {
+		"client": ["dev.hackmc.screenapi.ScreenApi"]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~26.1.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
