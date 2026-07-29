@@ -13,7 +13,8 @@
     "check": "node --check src/main/main.js && node --check src/main/services/auth.js && node --check src/main/services/minecraft.js && node --check src/main/services/modrinth.js && node --check src/preload.js && node --check src/renderer/app.js",
     "dist": "electron-builder",
     "dist:linux": "electron-builder --linux AppImage",
-    "dist:win": "electron-builder --win nsis"
+    "dist:win": "electron-builder --win nsis",
+    "dist:mac": "electron-builder --mac dmg"
   },
   "dependencies": {
     "minecraft-launcher-core": "3.18.2",
@@ -40,6 +41,7 @@
       }
     ],
     "linux": {
+      "artifactName": "Midnight-Launcher-${version}-Linux-${arch}.${ext}",
       "target": [
         "AppImage"
       ],
@@ -48,9 +50,18 @@
       "synopsis": "Launch Midnight Client and install Modrinth mods"
     },
     "win": {
+      "artifactName": "Midnight-Launcher-${version}-Windows-${arch}.${ext}",
       "target": [
         "nsis"
       ]
+    },
+    "mac": {
+      "artifactName": "Midnight-Launcher-${version}-macOS-${arch}.${ext}",
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.games",
+      "icon": "assets/midnight-logo.png"
     }
   }
 }
