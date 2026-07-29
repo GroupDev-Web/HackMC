@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https://cdn.modrinth.com https://*.modrinth.com https://mc-heads.net data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Midnight Launcher</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="titlebar">
+      <div class="brand">
+        <img src="../../assets/midnight-logo.png" alt="">
+        <span>MIDNIGHT CLIENT</span>
+      </div>
+      <nav class="top-tabs" aria-label="Launcher sections">
+        <button class="top-tab active" data-page="play"><span class="tab-icon">▰</span> Play</button>
+        <button class="top-tab" data-page="mods"><span class="tab-icon">▦</span> Mods</button>
+        <button class="top-tab" data-page="settings"><span class="tab-icon">⚙</span> Settings</button>
+      </nav>
+      <div class="window-actions">
+        <button id="accountButton" class="account-button">Sign in</button>
+        <button id="themeButton" title="Cycle background theme">◐</button>
+        <button id="folderButton" title="Open game folder">▣</button>
+        <button id="minimizeButton" aria-label="Minimize">—</button>
+        <button id="maximizeButton" aria-label="Maximize">□</button>
+        <button id="closeButton" class="danger" aria-label="Close">×</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="playPage" class="page active play-page">
+        <div class="hero">
+          <div class="hero-shade"></div>
+          <div id="ambientField" class="ambient-field" aria-hidden="true"></div>
+          <div class="hero-center">
+            <img src="../../assets/midnight-logo.png" alt="Midnight Client">
+            <div class="wordmark">MIDNIGHT CLIENT</div>
+            <strong>Minecraft <span id="versionLabel">26.1.2</span></strong>
+          </div>
+          <div class="hero-social">
+            <button title="Community">☁</button>
+            <button title="Friends">♟</button>
+            <button title="Console">›_</button>
+          </div>
+          <div id="themeLabel" class="theme-label">NOIR CITY</div>
+        </div>
+
+        <button id="launchButton" class="launch-button">
+          <span class="launch-icon">◆</span>
+          <span id="launchText">SIGN IN TO PLAY</span>
+        </button>
+        <div id="launchProgress" class="progress hidden"><div></div></div>
+        <p id="statusText" class="status-text">Ready.</p>
+      </section>
+
+      <section id="modsPage" class="page mods-page">
+        <div class="mods-toolbar">
+          <div>
+            <strong>Browse Mods</strong>
+            <span>Fabric · Minecraft <b id="modsVersion">26.1.2</b></span>
+          </div>
+          <div class="search-wrap"><span>⌕</span><input id="modSearch" type="search" maxlength="120" placeholder="Search mods"></div>
+        </div>
+        <div class="filter-row">
+          <button class="filter active">All</button>
+          <button class="filter" data-query="performance">Performance</button>
+          <button class="filter" data-query="utility">Tools</button>
+          <button class="filter" data-query="technology">Technology</button>
+          <button class="filter" data-query="adventure">Adventure</button>
+        </div>
+        <div class="mods-layout">
+          <div id="modGrid" class="mod-grid"><div class="empty">Loading Modrinth…</div></div>
+          <aside class="installed-panel">
+            <div class="panel-heading"><span>INSTALLED MODS</span><button id="refreshInstalled">↻</button></div>
+            <div id="installedList" class="installed-list"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="settingsPage" class="page settings-page">
+        <div class="settings-title"><strong>Launcher settings</strong><span>Changes apply on the next launch.</span></div>
+        <form id="settingsForm" class="settings-grid">
+          <label><span>Minecraft version</span><input name="gameVersion" value="26.1.2"></label>
+          <label><span>Fabric Loader</span><input name="loaderVersion" value="0.19.3"></label>
+          <label><span>Minimum memory</span><input name="memoryMin" value="2G" pattern="\d+[GM]"></label>
+          <label><span>Maximum memory</span><input name="memoryMax" value="4G" pattern="\d+[GM]"></label>
+          <label><span>Window width</span><input name="width" value="1280" inputmode="numeric"></label>
+          <label><span>Window height</span><input name="height" value="720" inputmode="numeric"></label>
+          <label class="wide"><span>Custom Java executable</span><input name="javaPath" placeholder="Leave empty to use java from PATH"></label>
+          <button class="save-button" type="submit">SAVE SETTINGS</button>
+        </form>
+        <section class="theme-picker">
+          <div><strong>Visual atmosphere</strong><span>Choose the launcher background and ambient animation.</span></div>
+          <div class="theme-options">
+            <button data-theme-choice="noir"><i class="theme-noir"></i><span>Noir City</span></button>
+            <button data-theme-choice="eclipse"><i class="theme-eclipse"></i><span>Red Eclipse</span></button>
+            <button data-theme-choice="cavern"><i class="theme-cavern"></i><span>Obsidian</span></button>
+            <button data-theme-choice="winter"><i class="theme-winter"></i><span>Winter</span></button>
+          </div>
+        </section>
+      </section>
+    </main>
+    <div id="toast" class="toast" role="status"></div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

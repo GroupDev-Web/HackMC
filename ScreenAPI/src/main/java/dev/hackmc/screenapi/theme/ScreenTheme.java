@@ -16,18 +16,18 @@ public record ScreenTheme(
 		int radius
 ) {
 	public static final ScreenTheme OBSIDIAN_GLASS = new ScreenTheme(
-			0x54030810,
-			0xB0161B27,
-			0x70FFFFFF,
-			0x42FFFFFF,
-			0x06FFFFFF,
-			0xFF7C5CFC,
-			0xFF9E89FF,
+			0x24030810,
+			0x68161B27,
+			0x52FFFFFF,
+			0x28FFFFFF,
+			0x02FFFFFF,
+			0xFFE6323B,
+			0xFFFF626A,
 			0xFFF8F9FF,
 			0xFFADB4C7,
-			0x9A252C3D,
-			0xC0384259,
-			0x70000000,
+			0x00252C3D,
+			0x48384259,
+			0x38000000,
 			8
 	);
 }

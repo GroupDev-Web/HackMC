@@ -18,9 +18,13 @@ public final class GlassButton extends GlossyWidget {
 	@Override
 	protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
 		int surface = GlassRenderer.lerpColor(theme.control(), theme.controlHover(), hoverProgress);
-		GlassRenderer.roundedRect(graphics, getX(), getY(), width, height, 6, theme.panelEdge());
-		GlassRenderer.roundedRect(graphics, getX() + 1, getY() + 1, width - 2, height - 2, 5, surface);
-		graphics.fill(getX() + 7, getY() + 1, getRight() - 7, getY() + 2, 0x35FFFFFF);
+		GlassRenderer.roundedOutline(graphics, getX(), getY(), width, height, 6,
+				GlassRenderer.lerpColor(theme.panelEdge(), theme.accentBright(), hoverProgress));
+		if ((surface >>> 24) != 0) {
+			GlassRenderer.roundedRect(graphics, getX() + 1, getY() + 1, width - 2, height - 2, 5, surface);
+		}
+		graphics.fill(getX() + 7, getY() + 1, getRight() - 7, getY() + 2,
+				GlassRenderer.withAlpha(0xFFFFFFFF, Math.round(24 * hoverProgress)));
 		graphics.centeredText(Minecraft.getInstance().font, getMessage(), getX() + width / 2,
 				getY() + (height - 8) / 2, theme.text());
 	}

@@ -1,4 +1,4 @@
-# HackMC Screen API
+# Midnight Screen API
 
 A client-side UI library for Minecraft 26.1.2, Fabric Loader 0.19.3, Mojang
 mappings, and Java 25.
@@ -13,7 +13,7 @@ mappings, and Java 25.
 - Draggable HUD widgets with a 4-pixel snapping grid
 - Persistent HUD positions in `config/screenapi-hud.json`
 - Automatic bounds clamping and layout reset
-- `H` opens the HUD editor by default
+- Right Shift opens and closes the HUD editor in Midnight Client
 
 ## Creating a screen
 
@@ -65,5 +65,5 @@ so it remains compatible with Minecraft's normal text shaping and rendering.
 ```
 
 The standalone library JAR is generated at
-`build/libs/screenapi-1.0.0.jar`. The HackMC client includes it as a nested
+`build/libs/screenapi-1.5.0.jar`. Midnight Client includes it as a nested
 Fabric mod automatically.

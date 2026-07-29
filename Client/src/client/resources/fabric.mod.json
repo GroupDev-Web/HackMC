@@ -2,9 +2,9 @@
 	"schemaVersion": 1,
 	"id": "hackmc",
 	"version": "${version}",
-	"name": "HackMC",
-	"description": "A lightweight modular Fabric client.",
-	"authors": ["HackMC"],
+	"name": "Midnight Client",
+	"description": "A performance-first quality-of-life Fabric client with configurable HUD modules.",
+	"authors": ["Midnight Client"],
 	"license": "All-Rights-Reserved",
 	"environment": "client",
 	"entrypoints": {
@@ -15,6 +15,15 @@
 		"minecraft": "~26.1.2",
 		"java": ">=25",
 		"fabric-api": "*",
-		"screenapi": "*"
+		"screenapi": ">=1.5.0"
+	},
+	"suggests": {
+		"sodium": "*",
+		"lithium": "*",
+		"ferritecore": "*",
+		"immediatelyfast": "*",
+		"entityculling": "*",
+		"moreculling": "*",
+		"dynamic_fps": "*"
 	}
 }

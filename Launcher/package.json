@@ -1,0 +1,56 @@
+{
+  "name": "midnight-launcher",
+  "productName": "Midnight Launcher",
+  "version": "1.2.0",
+  "description": "Midnight Client launcher for Minecraft Java Edition",
+  "desktopName": "midnight-launcher.desktop",
+  "main": "src/main/main.js",
+  "author": "Midnight Client",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "check": "node --check src/main/main.js && node --check src/main/services/auth.js && node --check src/main/services/minecraft.js && node --check src/main/services/modrinth.js && node --check src/preload.js && node --check src/renderer/app.js",
+    "dist": "electron-builder",
+    "dist:linux": "electron-builder --linux AppImage",
+    "dist:win": "electron-builder --win nsis"
+  },
+  "dependencies": {
+    "minecraft-launcher-core": "3.18.2",
+    "msmc": "5.0.5"
+  },
+  "devDependencies": {
+    "electron": "43.2.0",
+    "electron-builder": "26.0.12"
+  },
+  "build": {
+    "appId": "client.midnight.launcher",
+    "productName": "Midnight Launcher",
+    "asar": true,
+    "publish": [],
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "../Client/build/libs/MidnightClient-1.5.0.jar",
+        "to": "client/MidnightClient-1.5.0.jar"
+      }
+    ],
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Game",
+      "icon": "assets/midnight-logo.png",
+      "synopsis": "Launch Midnight Client and install Modrinth mods"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    }
+  }
+}

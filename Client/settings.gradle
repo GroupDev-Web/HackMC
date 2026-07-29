@@ -5,7 +5,7 @@ pluginManagement {
 	}
 }
 
-rootProject.name = "HackMC"
+rootProject.name = "MidnightClient"
 
 include(":screenapi")
 project(":screenapi").projectDir = file("../ScreenAPI")

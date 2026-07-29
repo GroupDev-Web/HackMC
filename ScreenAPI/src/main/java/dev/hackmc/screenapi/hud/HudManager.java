@@ -11,6 +11,7 @@ import java.io.Writer;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -38,22 +39,34 @@ public final class HudManager {
 		return List.copyOf(WIDGETS.values());
 	}
 
+	public static List<HudWidget> visibleWidgets() {
+		return WIDGETS.values().stream().filter(HudWidget::visible).toList();
+	}
+
 	public static void render(GuiGraphicsExtractor graphics) {
 		WIDGETS.values().forEach(widget -> widget.render(graphics, false));
 	}
 
 	public static void renderEditor(GuiGraphicsExtractor graphics) {
-		WIDGETS.values().forEach(widget -> widget.render(graphics, true));
+		WIDGETS.values().stream().filter(HudWidget::visible)
+				.forEach(widget -> widget.render(graphics, true));
 	}
 
 	public static void save() {
 		try {
 			Path file = configFile();
 			Files.createDirectories(file.getParent());
+			Path temporary = file.resolveSibling(file.getFileName() + ".tmp");
 			Map<String, Position> positions = new LinkedHashMap<>();
 			WIDGETS.values().forEach(widget -> positions.put(widget.id(), new Position(widget.x(), widget.y())));
-			try (Writer writer = Files.newBufferedWriter(file)) {
+			try (Writer writer = Files.newBufferedWriter(temporary)) {
 				GSON.toJson(positions, POSITION_MAP, writer);
+			}
+			try {
+				Files.move(temporary, file, StandardCopyOption.REPLACE_EXISTING,
+						StandardCopyOption.ATOMIC_MOVE);
+			} catch (Exception unsupportedAtomicMove) {
+				Files.move(temporary, file, StandardCopyOption.REPLACE_EXISTING);
 			}
 		} catch (Exception ignored) {
 			// A layout failure must never crash the game or block the HUD.

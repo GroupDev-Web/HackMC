@@ -4,6 +4,11 @@ plugins {
 
 version = project.mod_version
 group = project.maven_group
+def expandedVersion = version.toString()
+
+base {
+	archivesName = "MidnightClient"
+}
 
 loom {
 	splitEnvironmentSourceSets()
@@ -24,9 +29,16 @@ dependencies {
 }
 
 processResources {
-	inputs.property "version", project.version
+	inputs.property "version", expandedVersion
 	filesMatching("fabric.mod.json") {
-		expand "version": project.version
+		expand "version": expandedVersion
+	}
+}
+
+processClientResources {
+	inputs.property "version", expandedVersion
+	filesMatching("fabric.mod.json") {
+		expand "version": expandedVersion
 	}
 }
 

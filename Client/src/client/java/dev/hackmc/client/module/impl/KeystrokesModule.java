@@ -2,9 +2,11 @@ package dev.hackmc.client.module.impl;
 
 import dev.hackmc.client.module.Module;
 import dev.hackmc.client.module.ModuleCategory;
+import dev.hackmc.client.module.HudModule;
+import dev.hackmc.screenapi.render.GlassRenderer;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 
-public final class KeystrokesModule extends Module {
+public final class KeystrokesModule extends Module implements HudModule {
 	public KeystrokesModule() {
 		super("keystrokes", "Keystrokes", "Shows movement and mouse input.", ModuleCategory.RENDER, true);
 	}
@@ -26,8 +28,18 @@ public final class KeystrokesModule extends Module {
 	}
 
 	private static void key(GuiGraphicsExtractor graphics, String label, int x, int y, boolean down, int width) {
-		graphics.fill(x, y, x + width, y + 16, down ? 0xB0FFFFFF : 0x780A0D14);
+		GlassRenderer.roundedRect(graphics, x, y, width, 16, 4, down ? 0xD8FFFFFF : 0xA51A1B18);
 		int color = down ? 0xFF11141B : 0xFFF5F7FF;
 		graphics.centeredText(MC.font, label, x + width / 2, y + 4, color);
+	}
+
+	@Override
+	public int hudWidth() {
+		return 54;
+	}
+
+	@Override
+	public int hudHeight() {
+		return 52;
 	}
 }

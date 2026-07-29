@@ -2,9 +2,9 @@
 	"schemaVersion": 1,
 	"id": "screenapi",
 	"version": "${version}",
-	"name": "HackMC Screen API",
+	"name": "Midnight Screen API",
 	"description": "Glossy transparent screens, controls, custom fonts, and HUD editing for Fabric clients.",
-	"authors": ["HackMC"],
+	"authors": ["Midnight Client"],
 	"license": "MIT",
 	"environment": "client",
 	"entrypoints": {

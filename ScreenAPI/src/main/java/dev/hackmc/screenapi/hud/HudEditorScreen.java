@@ -6,11 +6,14 @@ import dev.hackmc.screenapi.theme.ScreenFonts;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.resources.Identifier;
 
 import java.util.function.Function;
 
 public final class HudEditorScreen extends GlossyScreen {
 	private static final int SNAP = 4;
+	private static final Identifier CLIENT_LOGO =
+			Identifier.fromNamespaceAndPath("screenapi", "textures/gui/midnight_logo.png");
 	private final Screen parent;
 	private final String brand;
 	private final Function<Screen, Screen> modsScreenFactory;
@@ -31,11 +34,23 @@ public final class HudEditorScreen extends GlossyScreen {
 
 	@Override
 	protected void buildScreen(int x, int y, int width, int height) {
-		addControl(new dev.hackmc.screenapi.component.GlassButton(x + width - 104, y + 10, 86, 20,
+		boolean clamped = false;
+		for (HudWidget widget : HudManager.widgets()) {
+			int safeX = Math.max(4, Math.min(this.width - widget.width() - 4, widget.x()));
+			int safeY = Math.max(16, Math.min(this.height - widget.height() - 4, widget.y()));
+			if (safeX != widget.x() || safeY != widget.y()) {
+				widget.moveTo(safeX, safeY);
+				clamped = true;
+			}
+		}
+		if (clamped) {
+			HudManager.save();
+		}
+		addControl(new dev.hackmc.screenapi.component.GlassButton(this.width - 100, 10, 88, 20,
 				"Reset layout", HudManager::resetAll, theme));
 		if (modsScreenFactory != null) {
 			addControl(new dev.hackmc.screenapi.component.GlassButton(
-					x + (width - 92) / 2, y + (height - 26) / 2, 92, 26,
+					(this.width - 176) / 2, this.height / 2 + 32, 176, 34,
 					"Mods", () -> minecraft.setScreen(modsScreenFactory.apply(this)), theme));
 		}
 	}
@@ -43,18 +58,18 @@ public final class HudEditorScreen extends GlossyScreen {
 	@Override
 	protected void extractGlassContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
 		int brandWidth = font.width(brand);
-		graphics.text(font, ScreenFonts.text(brand), (width - brandWidth) / 2, 19, theme.text(), false);
-		graphics.fill((width - brandWidth) / 2, 30, (width + brandWidth) / 2, 31, theme.accent());
-		graphics.text(font, ScreenFonts.text("Drag HUD cards anywhere • positions snap to a 4px grid"),
-				(width - font.width("Drag HUD cards anywhere • positions snap to a 4px grid")) / 2,
-				48, theme.mutedText(), false);
-		for (HudWidget widget : HudManager.widgets()) {
+		int logoSize = Math.min(90, Math.max(58, height / 5));
+		int logoX = (width - logoSize) / 2;
+		int logoY = Math.max(28, height / 2 - logoSize - 30);
+		graphics.blit(CLIENT_LOGO, logoX, logoY, logoX + logoSize, logoY + logoSize, 0, 1, 0, 1);
+		graphics.text(font, ScreenFonts.text(brand), (width - brandWidth) / 2, logoY + logoSize + 3, theme.text(), false);
+		for (HudWidget widget : HudManager.visibleWidgets()) {
 			boolean selected = widget == dragging || contains(widget, mouseX, mouseY);
-			int edge = selected ? theme.accentBright() : 0x78FFFFFF;
-			GlassRenderer.roundedOutline(graphics, widget.x() - 3, widget.y() - 3,
-					widget.width() + 6, widget.height() + 6, 5, GlassRenderer.withAlpha(edge, selected ? 155 : 70));
-			graphics.text(font, ScreenFonts.text(widget.title()), widget.x(), widget.y() - 13,
-					selected ? theme.text() : theme.mutedText(), false);
+			if (selected) {
+				GlassRenderer.roundedOutline(graphics, widget.x() - 3, widget.y() - 3,
+						widget.width() + 6, widget.height() + 6, 5,
+						GlassRenderer.withAlpha(theme.accentBright(), 155));
+			}
 		}
 		HudManager.renderEditor(graphics);
 		graphics.fill(width / 2, 38, width / 2 + 1, height - 12, 0x20FFFFFF);
@@ -62,9 +77,15 @@ public final class HudEditorScreen extends GlossyScreen {
 	}
 
 	@Override
+	protected boolean showPanel() {
+		return false;
+	}
+
+	@Override
 	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
-		for (int i = HudManager.widgets().size() - 1; i >= 0; i--) {
-			HudWidget widget = HudManager.widgets().get(i);
+		var visibleWidgets = HudManager.visibleWidgets();
+		for (int i = visibleWidgets.size() - 1; i >= 0; i--) {
+			HudWidget widget = visibleWidgets.get(i);
 			if (contains(widget, event.x(), event.y())) {
 				dragging = widget;
 				dragOffsetX = event.x() - widget.x();

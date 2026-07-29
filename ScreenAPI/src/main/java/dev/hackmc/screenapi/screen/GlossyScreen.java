@@ -61,12 +61,17 @@ public abstract class GlossyScreen extends Screen {
 
 	@Override
 	public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
-		extractBackground(graphics, mouseX, mouseY, delta);
-		GlassRenderer.glassPanel(graphics, panelX, panelY, panelWidth, panelHeight, theme);
-		graphics.text(font, title, panelX + 18, panelY + 15, theme.text(), false);
-		graphics.fill(panelX + 18, panelY + 32, panelX + panelWidth - 18, panelY + 33, 0x24FFFFFF);
+		if (showPanel()) {
+			GlassRenderer.glassPanel(graphics, panelX, panelY, panelWidth, panelHeight, theme);
+			graphics.text(font, title, panelX + 18, panelY + 15, theme.text(), false);
+			graphics.fill(panelX + 18, panelY + 32, panelX + panelWidth - 18, panelY + 33, 0x24FFFFFF);
+		}
 		extractGlassContents(graphics, mouseX, mouseY, delta);
 		super.extractRenderState(graphics, mouseX, mouseY, delta);
+	}
+
+	protected boolean showPanel() {
+		return true;
 	}
 
 	protected void extractGlassContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {

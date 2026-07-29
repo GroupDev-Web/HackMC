@@ -9,6 +9,9 @@ public final class GlassRenderer {
 
 	public static void roundedRect(GuiGraphicsExtractor graphics, int x, int y, int width, int height,
 			int radius, int color) {
+		if (width <= 0 || height <= 0 || (color >>> 24) == 0) {
+			return;
+		}
 		int safeRadius = Math.max(0, Math.min(radius, Math.min(width, height) / 2));
 		for (int row = 0; row < height; row++) {
 			int inset = cornerInset(row, height, safeRadius);
@@ -18,11 +21,23 @@ public final class GlassRenderer {
 
 	public static void roundedOutline(GuiGraphicsExtractor graphics, int x, int y, int width, int height,
 			int radius, int color) {
+		if (width <= 0 || height <= 0 || (color >>> 24) == 0) {
+			return;
+		}
 		int safeRadius = Math.max(1, Math.min(radius, Math.min(width, height) / 2));
-		graphics.horizontalLine(x + safeRadius, x + width - safeRadius - 1, y, color);
-		graphics.horizontalLine(x + safeRadius, x + width - safeRadius - 1, y + height - 1, color);
-		graphics.verticalLine(x, y + safeRadius, y + height - safeRadius - 1, color);
-		graphics.verticalLine(x + width - 1, y + safeRadius, y + height - safeRadius - 1, color);
+		for (int row = 0; row < height; row++) {
+			int inset = cornerInset(row, height, safeRadius);
+			int left = x + inset;
+			int right = x + width - inset;
+			if (row == 0 || row == height - 1) {
+				graphics.fill(left, y + row, right, y + row + 1, color);
+			} else {
+				graphics.fill(left, y + row, Math.min(right, left + 1), y + row + 1, color);
+				if (right - 1 > left) {
+					graphics.fill(right - 1, y + row, right, y + row + 1, color);
+				}
+			}
+		}
 	}
 
 	public static void glassPanel(GuiGraphicsExtractor graphics, int x, int y, int width, int height,

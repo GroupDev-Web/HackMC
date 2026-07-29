@@ -11,6 +11,7 @@ public abstract class Module {
 	private final String description;
 	private final ModuleCategory category;
 	private boolean enabled;
+	private Runnable changed = () -> {};
 
 	protected Module(String id, String name, String description, ModuleCategory category, boolean enabled) {
 		this.id = id;
@@ -54,6 +55,11 @@ public abstract class Module {
 		} else {
 			onDisable();
 		}
+		changed.run();
+	}
+
+	final void onChanged(Runnable changed) {
+		this.changed = changed;
 	}
 
 	protected void onEnable() {
