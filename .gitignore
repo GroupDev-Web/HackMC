@@ -1,0 +1,3 @@
+# The deployable website is already exported at the repository root.
+# Keep the lowercase Next.js source workspace local and avoid treating it as a submodule.
+/website/
